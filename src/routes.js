@@ -1,7 +1,6 @@
 import {
   // Login
-  Login_Page,
-  Home_Page
+  Home_Page, Recebimentos_Page, Contas_Page
 } from './views';
 
 // const Config = [
@@ -16,17 +15,22 @@ import {
 
 const Routes = [
   {
-    norender: true,
-    path: '/login',
-    name: 'Login',
-    component: Login_Page,
-    layout: '/auth',
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: Home_Page,
+    layout: '/in',
   },
   {
-    path: '/',
-    name: 'Início',
-    component: Home_Page,
-    layout: '/internal',
+    path: '/recebimentos',
+    name: 'Recebimentos',
+    component: Recebimentos_Page,
+    layout: '/in',
+  },
+  {
+    path: '/contas',
+    name: 'Contas',
+    component: Contas_Page,
+    layout: '/in',
   },
   // {
   //   collapse: true,

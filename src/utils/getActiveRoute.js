@@ -2,7 +2,7 @@ import mainRoutes from 'routes.js';
 
 export const getActiveRoute = (_routes) => {
   let routes = _routes ? _routes : mainRoutes;
-  let activeRoute = 'Default Brand Text';
+  let activeRoute = 'My Teller';
   for (let i = 0; i < routes.length; i++) {
     if (routes[i].collapse) {
       let collapseActiveRoute = getActiveRoute(routes[i].views);
@@ -10,9 +10,14 @@ export const getActiveRoute = (_routes) => {
         return collapseActiveRoute;
       }
     } else {
-      if (
-        window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
-      ) {
+      if(routes[i].form){
+        let path = window.location.pathname.split('/');
+        path.splice(-1, path.length).join("/")
+        if (path.join("/") === (routes[i].layout + routes[i].path)) {
+          return routes[i];
+        }
+      }
+      if (window.location.pathname === (routes[i].layout + routes[i].path)) {
         return routes[i];
       }
     }

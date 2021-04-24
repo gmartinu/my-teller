@@ -3,10 +3,7 @@ import ReactDOM from 'react-dom';
 import 'assets/css/index.css';
 import 'assets/css/scroll.css';
 
-import { 
-    AuthLayout, 
-    InternalLayout 
-} from 'layouts';
+import { InternalLayout } from 'layouts';
 import {
   BrowserRouter as Router,
   Route,
@@ -19,6 +16,7 @@ import MuiAlert from '@material-ui/lab/Alert';
 import { Dialog } from 'components';
 
 import Theme from 'theme.js';
+import { setDefaultProtoTypes } from 'prototypes';
 
 const AppConstantsDefault = {
   snack: {
@@ -151,6 +149,7 @@ const App = () => {
   };
 
   React.useEffect(() => {
+    setDefaultProtoTypes();
     // SNACK FUNCTIONS
     appConstants.snack.error = (msg, timer = 1000) =>
       openSnackBar('error', msg, timer);
@@ -191,9 +190,8 @@ const App = () => {
         <Dialog {...dialog} />
         <Router>
           <Switch>
-            <Route path="/auth" component={AuthLayout} />
-            <Route path="/internal" component={InternalLayout} />
-            <Redirect from="/" to="/auth/login-page" />
+            <Route path="/" component={InternalLayout} />
+            <Redirect from="/" to="/" />
           </Switch>
         </Router>
       </AppContext.Provider>

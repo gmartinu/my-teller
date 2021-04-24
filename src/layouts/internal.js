@@ -15,8 +15,16 @@ import {
   Collapse,
   List,
   IconButton,
+  Divider,
 } from '@material-ui/core';
-import {  ExpandLess, ExpandMore, ExitToApp, Menu} from '@material-ui/icons';
+import {
+  ChevronLeft,
+  ExpandLess,
+  ExpandMore,
+  Menu,
+  VerticalAlignBottom,
+  VerticalAlignTop,
+} from '@material-ui/icons';
 import { Button } from 'components';
 import routes from 'routes';
 
@@ -105,6 +113,10 @@ const useStyles = makeStyles((theme) => ({
   hide: {
     display: 'none',
   },
+  flex: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
 }));
 
 export default function Auth() {
@@ -116,6 +128,15 @@ export default function Auth() {
   const changeState = (st) => {
     // setState(_v => ({..._v, ...st}))
     setState(() => ({ ...st }));
+  };
+
+  const handleDrawer = () => {
+    return setDrawer(!drawer);
+  };
+
+  const redirectClick = (layout, path) => {
+    handleDrawer();
+    return history.push(layout + path);
   };
 
   const createLinks = (routes) => {
@@ -152,18 +173,16 @@ export default function Auth() {
         );
       }
       return (
-        <ListItem
-          className={classes.listItem}
-          button
-          onClick={() => history.push(prop.layout + prop.path)}
-          key={key}
-        >
-          <ListItemText
-            className={classes.listText}
-            primary={prop.name}
-            disableTypography={true}
-          />
-        </ListItem>
+        <>
+          {key !== 0 ? <Divider /> : null}
+          <ListItem
+            button
+            onClick={() => redirectClick(prop.layout, prop.path)}
+            key={key}
+          >
+            <ListItemText primary={prop.name} disableTypography={true} />
+          </ListItem>
+        </>
       );
     });
   };
@@ -176,14 +195,14 @@ export default function Auth() {
           <IconButton
             color="inherit"
             aria-label="open drawer"
-            onClick={() => setDrawer(true)}
+            onClick={handleDrawer}
             edge="start"
             className={clsx(classes.menuButton, drawer && classes.hide)}
           >
-           <Menu/>
+            <Menu />
           </IconButton>
           <Typography variant="h6" noWrap>
-            {getActiveRoute().name}
+            My Teller - {getActiveRoute().name}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -192,17 +211,32 @@ export default function Auth() {
           paper: classes.drawerPaper,
         }}
         open={drawer}
-        onClose={() => setDrawer(false)}
+        onClose={handleDrawer}
       >
-        <Box p={3} className={classes.mainBox}>
+        <Box p={1} className={[classes.toolbar, classes.flex]}>
+          <IconButton onClick={handleDrawer}>
+            <ChevronLeft />
+          </IconButton>
+        </Box>
+        <Divider />
+        <Box p={2} pt={0} className={classes.mainBox}>
           <List component="nav">{createLinks(routes)}</List>
+        </Box>
+        <Box m={2} mb={0}>
+          <Button
+            startIcon={<VerticalAlignBottom />}
+            color="primary"
+            onClick={() => console.log('importar')}
+            label="Importar"
+            fullWidth
+          />
         </Box>
         <Box m={2}>
           <Button
-            startIcon={<ExitToApp />}
+            startIcon={<VerticalAlignTop />}
             color="primary"
-            onClick={() => history.push('/auth/login')}
-            label="Logout"
+            onClick={() => console.log('exportar')}
+            label="Exportar"
             fullWidth
           />
         </Box>
@@ -211,9 +245,9 @@ export default function Auth() {
         <div className={classes.toolbar} />
         <div className={classes.internalContent}>
           <Switch>
-            {getRoutes('/internal')}
-            {getForms('/internal')}
-            <Redirect from="/internal" to="/internal/os_abertas" />
+            {getRoutes('/in')}
+            {getForms('/in')}
+            <Redirect from="/" to="/in/dashboard" />
           </Switch>
         </div>
       </main>
